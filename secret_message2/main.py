@@ -164,17 +164,17 @@ print("======================================")
 print("now you must decide which encrpition method you would like to use.\n")
 y = str(input("Either: 1. Ceaser Cipher or 2. Vigenere Cipher "))
 print("======================================")
-print("Using th secret code:,", y, " you get:")
+
 
 if y == '1':
     encoder = random.randint(0, 3)
     msg_enc = encoding(msg, encoder)
     n = random.randint(1, 25)
     coded = caesar_cipher(msg_enc, n)
-    print(coded)
     z = 'Ceaser Cipher'
+    print("Using th secret code:,", z, " you get:")
+    print(coded)
     print("======================================")
-    print("Now, you must decide which encrpytion method you would like to use.\n")
 
 elif y == '2':
     encoder = random.randint(0, 3)
@@ -182,11 +182,13 @@ elif y == '2':
     print(msg_enc)
     key = [1,2,3,4,5]
     coded = vigenere_cipher(msg_enc, key)
-    print(coded)   
+
     z = 'Vigenere Cipher'
+    print("Using th secret code:,", z, " you get:")
+    print(coded)
     print("======================================")
 
-print("Nice Work! Now you must decrypt the message in an easy and time efficient way.\n")
+print("Nice Work! Now we must decrypt the message in an easy and time efficient way.\n")
 print("Luckly for you, the team created decrpition methods for each of the secret codes.\n")
 
 print("Since you Used:", z, "We have used the decryption method and got:")
@@ -209,7 +211,8 @@ if y == '1':
 
 
 elif y == '2':
-    msg_dec = vigenere_cipher(coded, key)
+    new_key = [26-1, 26-2, 26-3, 26-4, 26-5]
+    msg_dec = vigenere_cipher(coded, new_key)
     print(coded)
     print(msg_dec)
     print("encoder: ", encoder)
