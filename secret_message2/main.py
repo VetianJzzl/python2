@@ -219,4 +219,4 @@ else:
     print("Congrautlations! You have completed the Mission by sucesslfully getting a message to command. Your troops have been saved! \n")
 
 
-# print()
+print("hello")
