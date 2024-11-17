@@ -195,7 +195,8 @@ print("Since you Used:", z, "We have used the decryption method and got:")
 
 # Decryption
 if y == '1':
-    msg_dec = caesar_cipher(coded, n)
+    msg_dec = caesar_cipher(coded, 26-n)
+    print(msg_dec)
     if encoder == 0:
         msg_dec = even_odd_swap(msg_dec)
     elif encoder == 1:
