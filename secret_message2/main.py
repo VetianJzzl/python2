@@ -62,79 +62,93 @@ def caesar_cipher(x, n):
             s = s + letters[new_idx]
     return s        
 
-def vigenere_cipher(x, key):   
+def vigenere_cipher(msg, key):   
     s=''
-    for i in range(len(x)):
-        if x[i] == ' ':
+    for i in range(len(msg)):
+        if msg[i] == ' ':
             s = s + ' '
         else:
-            idx = letters.find(x[i])
-            new_idx = (idx+key[i % len(key)])%26
+            idx = int(letters.find(msg[i]))
+            rem = i % len(key)
+            new_idx = (idx+key[rem])%26
             s = s + letters[new_idx]
     return s 
 
-print()
-print()
+def encoding(amsg, encoder):
+    # encoder = 0
+    if encoder == 0:
+        msg_enc = amsg
+    elif encoder == 1:
+        msg_enc = even_odd_swap(amsg)
+    elif encoder == 2:
+        msg_enc = reverse(amsg)
+    else:
+        msg_enc = swap_middle(amsg)
+
+    return msg_enc
 
 
-msg = 'python'
-secret_code = ''
+def test():
+    amsg = 'python'
+    secret_code = ''
 
  
-for kk in range(10):
-    n = random.randint(0, 25)
-    secret_code = secret_code + letters[n]
+    for kk in range(10):
+        n = random.randint(0, 25)
+        secret_code = secret_code + letters[n]
 
-msg = msg + secret_code
+    amsg = amsg + secret_code
+    print("msg: ", amsg)
 
+    encoder = random.randint(0, 3)
+    # encoder = 0
+    if encoder == 0:
+        msg_enc = amsg
+    elif encoder == 1:
+        msg_enc = even_odd_swap(amsg)
+    elif encoder == 2:
+        msg_enc = reverse(amsg)
+    else:
+        msg_enc = swap_middle(amsg)
 
-encoder = random.randint(0, 3)
-encoder = 0
-if encoder == 0:
-    msg_enc = msg
-elif encoder == 1:
-    msg_enc = even_odd_swap(msg)
-elif encoder == 2:
-    msg_enc = reverse(msg)
-else:
-    msg_enc = swap_middle(msg)
+    msg_enemy = caesar_cipher(msg_enc, random.randint(1, 25))
+    print("enemy msg: ", msg_enemy)
 
-msg_enemy = caesar_cipher(msg_enc, random.randint(1, 25))
-
-
-for kk in range(1, 26):
-    msg_dec = caesar_cipher(msg_enemy, kk)
-    msg_dec_eo = even_odd_swap(msg_dec)
-    msg_dec_r  = reverse(msg_dec)
-    msg_dec_ms = swap_middle(msg_dec)
-   
+    for kk in range(1, 26):
+        msg_dec = caesar_cipher(msg_enemy, kk)
+        msg_dec_eo = even_odd_swap(msg_dec)
+        msg_dec_r  = reverse(msg_dec)
+        msg_dec_ms = swap_middle(msg_dec)
     
-    if msg_dec[0:6:1]=='python':
-        print('code cracked ...')
-       
-        print('Secret code is ...')
-        print(msg_dec[6::1])
-        break
-    elif msg_dec_eo[0:6:1]=='python':
-        print('code cracked ...')
-       
-        print('Secret code is ...')
-        print(msg_dec_eo[6::1])
-        break
-    elif msg_dec_r[0:6:1]=='python':
-        print('code cracked ...')
-       
-        print('Secret code is ...')
-        print(msg_dec_r[6::1])
-        break
-    elif msg_dec_ms[0:6:1]=='python':
-        print('code cracked ...')
-       
-        print('Secret code is ...')
-        print(msg_dec_ms[6::1])
-        break
+        
+        if msg_dec[0:6:1]=='python':
+            print('code cracked : caeser...')
 
+            print('Secret code is ...')
+            print(msg_dec[6::1])
+            break
+        elif msg_dec_eo[0:6:1]=='python':
+            print('code cracked caeser + even_odd...')
+        
+            print('Secret code is ...')
+            print(msg_dec_eo[6::1])
+            break
+        elif msg_dec_r[0:6:1]=='python':
+            print('code cracked caeser + even_odd + reverse...')
+        
+            print('Secret code is ...')
+            print(msg_dec_r[6::1])
+            break
+        elif msg_dec_ms[0:6:1]=='python':
+            print('code cracked caeser + even_odd + reverse + swap...')
+        
+            print('Secret code is ...')
+            print(msg_dec_ms[6::1])
+            break
 
+print("======================================")
+print("Simple Test")
+test()
 
        
 
@@ -153,14 +167,21 @@ print("======================================")
 print("Using th secret code:,", y, " you get:")
 
 if y == '1':
-    coded = caesar_cipher(msg, random.randint(1, 25))
+    encoder = random.randint(0, 3)
+    msg_enc = encoding(msg, encoder)
+    n = random.randint(1, 25)
+    coded = caesar_cipher(msg_enc, n)
     print(coded)
     z = 'Ceaser Cipher'
     print("======================================")
     print("Now, you must decide which encrpytion method you would like to use.\n")
 
 elif y == '2':
-    coded = vigenere_cipher(msg, secret_code)
+    encoder = random.randint(0, 3)
+    msg_enc = encoding(msg, encoder)
+    print(msg_enc)
+    key = [1,2,3,4,5]
+    coded = vigenere_cipher(msg_enc, key)
     print(coded)   
     z = 'Vigenere Cipher'
     print("======================================")
@@ -168,52 +189,44 @@ elif y == '2':
 print("Nice Work! Now you must decrypt the message in an easy and time efficient way.\n")
 print("Luckly for you, the team created decrpition methods for each of the secret codes.\n")
 
-print("Since you Used", z,"We have used the decryption method and got:")
+print("Since you Used:", z, "We have used the decryption method and got:")
 
 # Decryption
 if y == '1':
-    msg_dec = caesar_cipher(msg_enemy, kk)
-    msg_dec_eo = even_odd_swap(msg_dec)
-    msg_dec_r  = reverse(msg_dec)
-    msg_dec_ms = swap_middle(msg_dec)
+    msg_dec = caesar_cipher(coded, n)
+    if encoder == 0:
+        msg_dec = even_odd_swap(msg_dec)
+    elif encoder == 1:
+        msg_dec = even_odd_swap(msg_dec)
+    elif encoder == 2:
+        msg_dec  = reverse(msg_dec)
+    else:
+        msg_dec = swap_middle(msg_dec)
     
+    print("======================================")
+    print("DECODING")
     print(msg_dec)
-    print(msg_dec_eo)
-    print(msg_dec_r)
-    print(msg_dec_ms)
-    print(msg)
-    
-    if msg_dec[0:6:1]==msg:
-        print('code cracked ...')
-    
-        print('Secret code is ...')
-        print(msg_dec[6::1])
-        
-    elif msg_dec_eo[0:6:1]==msg:
-        print('code cracked ...')
-    
-        print('Secret code is ...')
-        print(msg_dec_eo[6::1])
-       
-    elif msg_dec_r[0:6:1]==msg:
-        print('code cracked ...')
-    
-        print('Secret code is ...')
-        print(msg_dec_r[6::1])
-     
-    elif msg_dec_ms[0:6:1]==msg:
-        print('code cracked ...')
-    
-        print('Secret code is ...')
-        print(msg_dec_ms[6::1])
-    
 
-    print(x)
-    
-    print("Now you must decide which encrpition method you would like to use.\n")
+
 elif y == '2':
-    x = vigenere_cipher(x, secret_code)
-    print(x)   
+    msg_dec = vigenere_cipher(coded, key)
+    print(coded)
+    print(msg_dec)
+    print("encoder: ", encoder)
+    if encoder == 0:
+        msg_dec = even_odd_swap(msg_dec)
+    elif encoder == 1:
+        msg_dec = even_odd_swap(msg_dec)
+    elif encoder == 2:
+        msg_dec  = reverse(msg_dec)
+    else:
+        msg_dec = swap_middle(msg_dec)
+    
+    print("======================================")
+    print("DECODING")
+    print(msg_dec)
+else :
+    print('error') 
 
 
 def check_palindrome(x):
