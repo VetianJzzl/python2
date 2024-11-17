@@ -1,7 +1,13 @@
+
+
+#############################################################################################################################
+import random
+letters='abcdefghijklmnopqrstuvwxyz'
+
 def even_odd_swap(x):
-    if (len(x)%2 != 0) :
+    if len(x)%2!=0:
         x = x + ' '
- 
+
     even_letters = x[0::2]
     odd_letters  = x[1::2]
     s=''
@@ -9,7 +15,7 @@ def even_odd_swap(x):
     for i in range(len(even_letters)):
         s = s+odd_letters[i]
         s = s+even_letters[i]
-
+    
     return s
 
 def swap_middle(x):
@@ -18,12 +24,12 @@ def swap_middle(x):
 
     first_half = x[0:int(len(x)/2):1]
     second_half = x[int(len(x)/2)::1]
-
+    
     s = ''
     s = s + second_half 
     s = s + first_half
     return s
-
+    
 def reverse(x):
     s = x[::-1]
     return s
@@ -38,7 +44,6 @@ def swap_mid_rev_decode(x):
     s = swap_middle(s_rev)
     return s
 
-letters = 'abcdefghijklmnopqrstuvwxyz'
 def reverse_word(x):
     words = x.split(' ')
     s = ''
@@ -55,14 +60,33 @@ def caesar_cipher(x, n):
             idx = letters.find(x[i])
             new_idx = (idx+n)%26
             s = s + letters[new_idx]
-    return s  
+    return s        
+
+def vigenere_cipher(x, key):   
+    s=''
+    for i in range(len(x)):
+        if x[i] == ' ':
+            s = s + ' '
+        else:
+            idx = letters.find(x[i])
+            new_idx = (idx+key[i % len(key)])%26
+            s = s + letters[new_idx]
+    return s 
+
+print()
+print()
+
+
 msg = 'python'
 secret_code = ''
 
-# 10 random letters 
+ 
 for kk in range(10):
     n = random.randint(0, 25)
-    secret_code = secret_code + letters[n]    
+    secret_code = secret_code + letters[n]
+
+msg = msg + secret_code
+
 
 encoder = random.randint(0, 3)
 encoder = 0
@@ -76,10 +100,7 @@ else:
     msg_enc = swap_middle(msg)
 
 msg_enemy = caesar_cipher(msg_enc, random.randint(1, 25))
-print()
-print('I am hearing ...')
-print(msg_enemy)
-print()
+
 
 for kk in range(1, 26):
     msg_dec = caesar_cipher(msg_enemy, kk)
@@ -87,31 +108,113 @@ for kk in range(1, 26):
     msg_dec_r  = reverse(msg_dec)
     msg_dec_ms = swap_middle(msg_dec)
    
-    #print(msg_dec, msg_dec_eo, msg_dec_r, msg_dec_ms)
+    
     if msg_dec[0:6:1]=='python':
         print('code cracked ...')
-       # print('kk is equal to ...', kk)
+       
         print('Secret code is ...')
         print(msg_dec[6::1])
         break
     elif msg_dec_eo[0:6:1]=='python':
         print('code cracked ...')
-       # print('kk is equal to ...', kk)
+       
         print('Secret code is ...')
         print(msg_dec_eo[6::1])
         break
     elif msg_dec_r[0:6:1]=='python':
         print('code cracked ...')
-       # print('kk is equal to ...', kk)
+       
         print('Secret code is ...')
         print(msg_dec_r[6::1])
         break
     elif msg_dec_ms[0:6:1]=='python':
         print('code cracked ...')
-       # print('kk is equal to ...', kk)
+       
         print('Secret code is ...')
         print(msg_dec_ms[6::1])
-        break  
+        break
+
+
+
+       
+
+print("======================================")
+print("Well, well, well. Look whos back!\n")
+print("Tired of being a German Commander? Well, you are in the right place!\n")
+print("You are now a British Intelligence officer whos job it is to encrypt messages.\n")
+print("You and your team believe you have come up with 2 secret codes that will help us defeat the Germans.\n")
+print("But to test that, we will try to endcrypt and decrypt some messages.\n")
+
+msg= str(input("Type message: "))
+print("======================================")
+print("now you must decide which encrpition method you would like to use.\n")
+y = str(input("Either: 1. Ceaser Cipher or 2. Vigenere Cipher "))
+print("======================================")
+print("Using th secret code:,", y, " you get:")
+
+if y == '1':
+    coded = caesar_cipher(msg, random.randint(1, 25))
+    print(coded)
+    z = 'Ceaser Cipher'
+    print("======================================")
+    print("Now, you must decide which encrpytion method you would like to use.\n")
+
+elif y == '2':
+    coded = vigenere_cipher(msg, secret_code)
+    print(coded)   
+    z = 'Vigenere Cipher'
+    print("======================================")
+
+print("Nice Work! Now you must decrypt the message in an easy and time efficient way.\n")
+print("Luckly for you, the team created decrpition methods for each of the secret codes.\n")
+
+print("Since you Used", z,"We have used the decryption method and got:")
+
+# Decryption
+if y == '1':
+    msg_dec = caesar_cipher(msg_enemy, kk)
+    msg_dec_eo = even_odd_swap(msg_dec)
+    msg_dec_r  = reverse(msg_dec)
+    msg_dec_ms = swap_middle(msg_dec)
+    
+    print(msg_dec)
+    print(msg_dec_eo)
+    print(msg_dec_r)
+    print(msg_dec_ms)
+    print(msg)
+    
+    if msg_dec[0:6:1]==msg:
+        print('code cracked ...')
+    
+        print('Secret code is ...')
+        print(msg_dec[6::1])
+        
+    elif msg_dec_eo[0:6:1]==msg:
+        print('code cracked ...')
+    
+        print('Secret code is ...')
+        print(msg_dec_eo[6::1])
+       
+    elif msg_dec_r[0:6:1]==msg:
+        print('code cracked ...')
+    
+        print('Secret code is ...')
+        print(msg_dec_r[6::1])
+     
+    elif msg_dec_ms[0:6:1]==msg:
+        print('code cracked ...')
+    
+        print('Secret code is ...')
+        print(msg_dec_ms[6::1])
+    
+
+    print(x)
+    
+    print("Now you must decide which encrpition method you would like to use.\n")
+elif y == '2':
+    x = vigenere_cipher(x, secret_code)
+    print(x)   
+
 
 def check_palindrome(x):
     ans = str(x) == reverse(x)
@@ -120,7 +223,7 @@ def check_palindrome(x):
 z = ""
 
 
-print('The Story begins during the battle of Beligum. Our hero is a German Platoon leader battling the French and British in the very north of france.\n')
+"""print('The Story begins during the battle of Beligum. Our hero is a German Platoon leader battling the French and British in the very north of france.\n')
 print("Soldier: Sir! the enemy is pinning our units down with heavy artillery and motars. We can't get to the enemy base without taking heavy losses!\n")
 print("You: I belive I have an idea! How far are we from the coast?\n")
 print("Soldier: -Consults Map- I believe we are only 5 miles away from the nearest coast, sir!\n")
@@ -214,9 +317,6 @@ else:
         print("Decoded:", decode)
         print('=============')
     
-    print("Soldier: Sir! We have just received a message from SCHÜTZENKOMPANIE! It says \n" input)
+    print("Soldier: Sir! We have just received a message from SCHÜTZENKOMPANIE! It says \n", x)
     print("General: Alright, I want you to send the Bismark and her Company for the Big guns and send 40 Luftwaffe planes for support! \n")
-    print("Congrautlations! You have completed the Mission by sucesslfully getting a message to command. Your troops have been saved! \n")
-
-
-print("hello")
+    print("Congrautlations! You have completed the Mission by sucesslfully getting a message to command. Your troops have been saved! \n")"""
