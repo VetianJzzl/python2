@@ -1,173 +1,222 @@
-import random
-import turtle
+def even_odd_swap(x):
+    if (len(x)%2 != 0) :
+        x = x + ' '
+ 
+    even_letters = x[0::2]
+    odd_letters  = x[1::2]
+    s=''
 
-t = turtle.Turtle()
-ts = t.getscreen()
+    for i in range(len(even_letters)):
+        s = s+odd_letters[i]
+        s = s+even_letters[i]
 
-###################
-# set the screen size
+    return s
 
-WIDTH, HEIGHT = 980, 500
-screen=turtle.Screen()
-screen.setup(WIDTH + 4, HEIGHT + 8)  # fudge factors due to window borders & title bar
-screen.setworldcoordinates(-300,-900, WIDTH, HEIGHT)
-screen.title("PIXEL PARTY")
-screen.bgcolor("light blue")
-###################
+def swap_middle(x):
+    if len(x)%2!=0:
+        x = x + ' '
 
-widths = [1,5,10,15, 20,25, 30,35, 40,45, 50,55, 60,65, 70,75, 80,85, 90,95, 100]
-lengths = [1,5,10,15, 20,25, 30,35, 40,45, 50,55, 60,65, 70,75, 80,85, 90,95, 100]
+    first_half = x[0:int(len(x)/2):1]
+    second_half = x[int(len(x)/2)::1]
 
-def draw_line(x0, y0, x1, y1):
-    t.penup()
-    t.goto(x0, y0)
-    t.pendown()
-    t.goto(x1, y1)
+    s = ''
+    s = s + second_half 
+    s = s + first_half
+    return s
 
-def draw_rectangle(x0, y0, len, hgt, clr):
-    t.fillcolor(clr)
-    t.begin_fill()
-    draw_line(x0, y0, x0+len, y0)
-    draw_line(x0+len, y0, x0+len, y0+hgt)
-    draw_line(x0+len, y0+hgt, x0, y0+hgt)
-    draw_line(x0, y0+hgt, x0, y0)
-    t.end_fill()
+def reverse(x):
+    s = x[::-1]
+    return s
 
-#instant drawing
+def swap_mid_rev(x):
+    s_swap = swap_middle(x)
+    s = reverse(s_swap)
+    return s
 
-def rgb_rectangles_col():
-    ts.tracer(0)
-    n_cols = 20 
-    x_val  = -150
-    y_val  = 0
-    
-    for jj in range(n_cols):
-        if jj < 5:
-           draw_rectangle(x_val, y_val, 20, 20, "red")
-        elif jj > 4 and jj < 15:
-           draw_rectangle(x_val, y_val, 20, 20, "blue")
+def swap_mid_rev_decode(x):
+    s_rev = reverse(x)
+    s = swap_middle(s_rev)
+    return s
+
+letters = 'abcdefghijklmnopqrstuvwxyz'
+def reverse_word(x):
+    words = x.split(' ')
+    s = ''
+    for kk in range(len(words)):
+        s = s+reverse(words[kk])+' '
+    return s
+
+def caesar_cipher(x, n):   
+    s=''
+    for i in range(len(x)):
+        if x[i] == ' ':
+            s = s + ' '
         else:
-           draw_rectangle(x_val, y_val, 20, 20, "green")
-        x_val = x_val + 20
-    
+            idx = letters.find(x[i])
+            new_idx = (idx+n)%26
+            s = s + letters[new_idx]
+    return s  
+msg = 'python'
+secret_code = ''
+
+# 10 random letters 
+for kk in range(10):
+    n = random.randint(0, 25)
+    secret_code = secret_code + letters[n]    
+
+encoder = random.randint(0, 3)
+encoder = 0
+if encoder == 0:
+    msg_enc = msg
+elif encoder == 1:
+    msg_enc = even_odd_swap(msg)
+elif encoder == 2:
+    msg_enc = reverse(msg)
+else:
+    msg_enc = swap_middle(msg)
+
+msg_enemy = caesar_cipher(msg_enc, random.randint(1, 25))
+print()
+print('I am hearing ...')
+print(msg_enemy)
+print()
+
+for kk in range(1, 26):
+    msg_dec = caesar_cipher(msg_enemy, kk)
+    msg_dec_eo = even_odd_swap(msg_dec)
+    msg_dec_r  = reverse(msg_dec)
+    msg_dec_ms = swap_middle(msg_dec)
+   
+    #print(msg_dec, msg_dec_eo, msg_dec_r, msg_dec_ms)
+    if msg_dec[0:6:1]=='python':
+        print('code cracked ...')
+       # print('kk is equal to ...', kk)
+        print('Secret code is ...')
+        print(msg_dec[6::1])
+        break
+    elif msg_dec_eo[0:6:1]=='python':
+        print('code cracked ...')
+       # print('kk is equal to ...', kk)
+        print('Secret code is ...')
+        print(msg_dec_eo[6::1])
+        break
+    elif msg_dec_r[0:6:1]=='python':
+        print('code cracked ...')
+       # print('kk is equal to ...', kk)
+        print('Secret code is ...')
+        print(msg_dec_r[6::1])
+        break
+    elif msg_dec_ms[0:6:1]=='python':
+        print('code cracked ...')
+       # print('kk is equal to ...', kk)
+        print('Secret code is ...')
+        print(msg_dec_ms[6::1])
+        break  
+
+def check_palindrome(x):
+    ans = str(x) == reverse(x)
+    return ans
+
+z = ""
 
 
-################
-rgb_rectangles_col()
-t.hideturtle()    
-ts.update()
-t.clear()
+print('The Story begins during the battle of Beligum. Our hero is a German Platoon leader battling the French and British in the very north of france.\n')
+print("Soldier: Sir! the enemy is pinning our units down with heavy artillery and motars. We can't get to the enemy base without taking heavy losses!\n")
+print("You: I belive I have an idea! How far are we from the coast?\n")
+print("Soldier: -Consults Map- I believe we are only 5 miles away from the nearest coast, sir!\n")
+print("You: Excellent! I shall send a message to the High Command and ask them to send planes and the Kriegsmarine for some Battleships to bombard the enemy base! Have our men stand down and take cover in the meantime. Keep them ready to attack at any moment!\n")
+print('Soldier: Yes Sir!\n')
 
-#t.hideturtle()    
-#ts.update()
-#t.clear()
+print('You: -picks up Enigma (a machine used by the Germans to encript and decript messages) to type message-')
 
-################
 
-def rgb_rectangles_row():
-    ts.tracer(0)
-    n_rows = 20
-    n_cols = 20 
-    x_val = -150
-    y_val = 150
-    
-    ts.tracer(0)
-    for kk in range(n_rows): 
-        for jj in range(n_cols):
-            if kk==jj:
-               draw_rectangle(x_val, y_val, 15, 15, "red")
-            else:
-               draw_rectangle(x_val, y_val, 15, 15, "green")
-            x_val = x_val + 15
-        x_val = -150
-        y_val = y_val - 15
-
-################
-rgb_rectangles_row()
-ts.update()
-t.clear()
-t.hideturtle()
-
-################
-
-def color_rectangles_row_col():
-    ts.tracer(0)
-
-    n_rows = 20; 
-    n_cols = 20; 
-    x_val = -150; 
-    y_val = 150
-    
-    # It's Me, MARIO!
-    # 1 = white, 2 = red, 3 = brown, 4= gold, 5 = black, 6 = blue. 
-    
-    # kk is the row index
-    # Define the color list per row
-    for kk in range(n_rows):
+x= input("Type message: ")
+if check_palindrome(x):
+    print("Contragulations, you have made your Message a Palindrome! You have earned the title of Palindrome Master! This was a secret Easter Egg added to the game")
+else:
+    print(x)
+    print('\n Now you must decide which encrpition method you would like to use. \n')
+    print("1. Even/Odd Swap")
+    print("2. Reverse")
+    print("3. Reverse Word")
+    print("4. Swap Middle")
+    print("5. Swap Middle Reverse")
+    y = input("Type the number of the method you would like to use: ")
+    if y == '1':
+        x_even_odd = even_odd_swap(x)
+        print(x_even_odd)
         
-        if kk==0 or kk==1:
-            color_list = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        elif kk==2:
-            color_list = [1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
-        elif kk==3:
-            color_list = [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1]
-        elif kk==4:
-            color_list = [1, 1, 1, 1, 1, 1, 3, 3, 3, 4, 4, 5, 4, 1, 1, 1, 1, 1, 1, 1]
-        elif kk==5:
-            color_list = [1, 1, 1, 1, 1, 3, 4, 3, 4, 4, 4, 5, 4, 4, 4, 1, 1, 1, 1, 1]
-        elif kk==6:
-            color_list = [1, 1, 1, 1, 1, 3, 4, 3, 3, 4, 4, 4, 5, 4, 4, 4, 1, 1, 1, 1]
-        elif kk==7:
-            color_list = [1, 1, 1, 1, 1, 1, 3, 4, 4, 4, 4, 5, 5, 5, 5, 1, 1, 1, 1, 1]
-        elif kk==8:
-            color_list = [1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1]
-        elif kk==9:
-            color_list = [1, 1, 1, 1, 1, 1, 2, 2, 6, 2, 2, 6, 2, 2, 1, 1, 1, 1, 1, 1]
-        elif kk==10:
-            color_list = [1, 1, 1, 1, 1, 2, 2, 2, 6, 2, 2, 6, 2, 2, 2, 1, 1, 1, 1, 1]
-        elif kk==11:
-            color_list = [1, 1, 1, 1, 2, 2, 2, 2, 6, 6, 6, 6, 2, 2, 2, 2, 1, 1, 1, 1]
-        elif kk==12:
-            color_list = [1, 1, 1, 1, 4, 4, 2, 6, 4, 6, 6, 4, 6, 2, 4, 4, 1, 1, 1, 1]
-        elif kk==13:
-            color_list = [1, 1, 1, 1, 4, 4, 4, 6, 6, 6, 6, 6, 6, 4, 4, 4, 1, 1, 1, 1]
-        elif kk==14:
-            color_list = [1, 1, 1, 1, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 1, 1, 1, 1]
-        elif kk==15:
-            color_list = [1, 1, 1, 1, 1, 1, 6, 6, 6, 1, 1, 6, 6, 6, 1, 1, 1, 1, 1, 1]
-        elif kk==16:
-            color_list = [1, 1, 1, 1, 1, 3, 3, 3, 1, 1, 1, 1, 3, 3, 3, 1, 1, 1, 1, 1]
-        elif kk==17:
-            color_list = [1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1]
-        else:
-            color_list = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        
-        pl = lengths[kk]
-        for jj in range(n_cols):
-            pw = widths[jj]            
-            if color_list[jj]==1:
-                draw_rectangle(x_val, y_val, pw, -pl, "white")
-            elif color_list[jj]==2:
-                draw_rectangle(x_val, y_val, pw, -pl, "red")
-            elif color_list[jj]==3:
-                draw_rectangle(x_val, y_val, pw,-pl, "brown")
-            elif color_list[jj]==4:
-                draw_rectangle(x_val, y_val, pw, -pl, "gold")
-            elif color_list[jj]==5:
-                draw_rectangle(x_val, y_val, pw, -pl, "black")
-            else:
-                draw_rectangle(x_val, y_val, pw, -pl, "blue")    
-            x_val = x_val + pw
-        x_val = -150
-        y_val = y_val - pl
-        
+    elif y == '2':
+        x_reverse = reverse(x)
+        print(x_reverse)    
+        x_rev = reverse(x)
+        print(x_rev)
+        z = x_rev
+    elif y == '3':  
+        x_rev_word = reverse_word(x)
+        print(x_rev_word)
+        z = x_rev_word
+    elif y == '4':
+        x_swap_mid = swap_middle(x)
+        print(x_swap_mid)
+        z = x_swap_mid
+    else:   
+        x_swap_mid_rev = swap_mid_rev(x)
+        print(x_swap_mid_rev)
+        z = x_swap_mid_rev
+    
+    print("decoded method")
+    print(z)
+    
+    
+    
+    
+    print('=============')
+    print("Later, At the German Military Base... \n")
+    print(" The Radio Operater get a message..." )
+    print(z)
+    print("-The Radio Operater puts the message into the Enigma Machine to decode it...-")
+    print()
+    if y == '1':
+        encode = even_odd_swap(x)
+        decode = even_odd_swap(encode)
+        print('=============')
+        print("Encoded:", encode)
+        print("Decoded:", decode)
+        print('=============')
+    
+    elif y == '2':
+        encode = reverse(x)   
+        decode = reverse(encode)
+        print('=============')
+        print("Encoded:", encode)
+        print("Decoded:", decode)
+        print('=============')
+    elif y == '3':  
+        encode =  reverse_word(x)
+        decode = reverse_word(encode)
+        print('=============')
+        print("Encoded:", encode)
+        print("Decoded:", decode)
+        print('=============')
+    elif y == '4':
+        encode =  swap_middle(x)
+        decode = swap_middle(encode)
+        print('=============')
+        print("Encoded:", encode)
+        print("Decoded:", decode)
+        print('=============')
+    else:   
+        encode = swap_mid_rev(x)
+        decode = swap_mid_rev(encode)
+        print('=============')
+        print("Encoded:", encode)
+        print("Decoded:", decode)
+        print('=============')
+    
+    print("Soldier: Sir! We have just received a message from SCHÜTZENKOMPANIE! It says \n" input)
+    print("General: Alright, I want you to send the Bismark and her Company for the Big guns and send 40 Luftwaffe planes for support! \n")
+    print("Congrautlations! You have completed the Mission by sucesslfully getting a message to command. Your troops have been saved! \n")
 
 
-color_rectangles_row_col()
-screen.mainloop()
-#t.hideturtle()
-#ts.update()    
-
-
-
-
+# print()
