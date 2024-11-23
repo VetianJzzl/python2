@@ -1,83 +1,76 @@
 import datetime as dt
 import time
 
-print('Welcome to your birthday countdown')
+
+print('Welcome to the birthday countdown!')
 try:
-    year = int(input('Which year were you born in?\n'))
-    month = int(input('Which month (1 for Jan, 2 for Feb, and so on)?\n'))
-    day = int(input('Which day in that month?\n'))
+  year = int(input('Tell me,Which year were you born in?\n'))
+  month = int(input('Which month (1 for Jan, 2 for Feb ..\n'))
+  day = int(input('Which day in that month? \n'))
 
+  try:
+    date_birth = dt.datetime(year, month, day)
+    current_time = dt.datetime.now()    
 
-    try:
-        date_birth = dt.datetime(year, month, day)
+    
+    if date_birth < current_time:
+      
+      weekday_num = date_birth.weekday()
+      weekday_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  
+      print('You may have forgotten this ')
+      print('But I can tell you ')
+      print('You were born on a  ', weekday_names[weekday_num])
+      
+  
+      
+      thisyear = current_time.year
+      thisyear_bday = dt.datetime(thisyear, month, day)
+  
+  
+      if thisyear_bday > current_time:
+        next_bday = thisyear_bday
+      else:
+        next_bday = dt.datetime(thisyear + 1, month, day)
+  
+      print()
 
-        weekday_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        weekday_num = date_birth.weekday()
-        print(weekday_num)
-        print('You may have forgotten which day of the week it was ...')
-        print('But I can tell you ... it was a ...', end = ' ')
-        print(weekday_names[weekday_num])
+      test_year = date_birth.year + 1
+      bday_list = [0 ,0, 0, 0, 0, 0, 0]
+      
+      while test_year < next_bday.year:
+        print(test_year, end = ' ')
+        test_date = dt.datetime(test_year, month, day)
+        weekday_num = test_date.weekday()
+        bday_list[weekday_num] = bday_list[weekday_num] + 1
+        test_year = test_year + 1
+      print()
+      for kk in range(7):
+        print('Your birthday was on a ', weekday_names[kk],bday_list[kk], ' times\n')
+  
+      print('Your next bithday will be on ', end = '')
+      print(next_bday)
+      weekday_num = next_bday.weekday()
+      print('That will be a ', weekday_names[weekday_num])
+  
+  
+      while next_bday > current_time: 
         current_time = dt.datetime.now()
-        thisyear = current_time.year
-        thisyear_bday = dt.datetime(thisyear, month, day)
-
-        if thisyear_bday > current_time:
-            next_bday = thisyear_bday
-        else:
-            next_bday = dt.datetime(thisyear+1, month, day)
-
-
-
-        print('Your next birthday will be on ...', end = ' ')
-        print(next_bday)
-        print()
-        print('That will be a ...', end = ' ')
-        weekday_num = next_bday.weekday()
-        print(weekday_names[weekday_num])
-        print()
-        print()
-
         dd = next_bday - current_time
 
         days_left = dd.days
-        total_seconds_left = dd.seconds
+        total_seconds = dd.seconds
 
-        # print(type(dd))
-
-        # We will convert seconds to HRS, MIN, SEC
-        seconds_left = total_seconds_left % 60
-        total_mins_left = total_seconds_left//60
+        seconds_left = total_seconds % 60
+        total_mins_left = total_seconds//60
         hrs_left = total_mins_left//60
-        minutes_left = total_mins_left % 60
+        minutes_left = total_mins_left%60
 
-
-        total_mins_left, seconds_left  = divmod(total_seconds_left, 60)
-        hrs_left, minutes_left  = divmod(total_mins_left, 60)
-
-
-
-
-        #print('Your next birthday is', days_left, 'days', hrs_left, 'hrs', minutes_left, 'mins', seconds_left, 'secs away.')
-        input()
-
-
-
-        while next_bday > current_time:
-            current_time = dt.datetime.now()
-            dd = next_bday - current_time
-            days_left = dd.days
-            total_seconds_left = dd.seconds
-
-        # We will convert seconds to HRS, MIN, SEC
-        seconds_left = total_seconds_left % 60
-        total_mins_left = total_seconds_left//60
-        hrs_left = total_mins_left//60
-        minutes_left = total_mins_left % 60
-
-        print('Your next birthday is', days_left, 'days', hrs_left, 'hrs', minutes_left, 'mins', seconds_left, 'secs away.', end = '\r')
-
+        print('You next bday is in ', days_left, 'days', hrs_left, 'hrs', minutes_left, 'minutes and', seconds_left , 'seconds', end = '\r')
         time.sleep(1)
-    except:
-        ("Invalid date, please enter again.")
+    else:
+      print('Really? You were born in the future?')
+  except:
+    print('ERROR: Invlaid Statement, please enter again')
 except:
-    print("Invalid Values for the Game. Please try again.")
+  print('Incorrect values, please enter again')
