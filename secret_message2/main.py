@@ -159,7 +159,7 @@ print("You are now a British Intelligence officer whos job it is to encrypt mess
 print("You and your team believe you have come up with 2 secret codes that will help us defeat the Germans.\n")
 print("But to test that, we will try to endcrypt and decrypt some messages.\n")
 
-msg= str(input("Type message: "))
+msg= str(input("Type message: ")).lower()
 print("======================================")
 print("now you must decide which encrpition method you would like to use.\n")
 y = str(input("Either: 1. Ceaser Cipher or 2. Vigenere Cipher "))
