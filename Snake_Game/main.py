@@ -6,7 +6,6 @@ import _tkinter
 screen = turtle.Screen()
 screen.setup(1.0, 1.0)
 
-
 bnd = turtle.Turtle()
 bnd.ht()
 bnd.fillcolor('white')
@@ -21,19 +20,18 @@ bnd.goto(-220, 220)
 bnd.goto(-220, -220)
 bnd.end_fill()
 
-
-
 obstacle = turtle.Turtle()
 obstacle.penup()
 obstacle.shape('square')
-obstacle.shapesize(1,6)
+obstacle.shapesize(1, 6)
 obstacle.color('OliveDrab')
 obstacle.speed(0)
 
 obstacle_len = 120
 obstacle_hgt = 20
 
-obstacle.goto(random.randint(-220 + obstacle_len, 220 - obstacle_len), random.randint(-220 + obstacle_hgt, 220 - obstacle_hgt))
+obstacle.goto(random.randint(-220 + obstacle_len, 220 - obstacle_len),
+              random.randint(-220 + obstacle_hgt, 220 - obstacle_hgt))
 
 # Start
 t = turtle.Turtle()
@@ -48,23 +46,26 @@ def down():
   if t.heading() != 90.0:
     t.setheading(-90.0)
 
+
 def up():
   if t.heading() != 270.0:
     t.setheading(90.0)
 
+
 def left():
   if t.heading() != 0.0:
     t.setheading(180.0)
+
 
 def right():
   if t.heading() != 180.0:
     t.setheading(0.0)
 
 
-ts.onkey(down, "down")
-ts.onkey(up, "up")
-ts.onkey(left, "left")
-ts.onkey(right, "right")
+ts.onkey(down, "Down")
+ts.onkey(up, "Up")
+ts.onkey(left, "Left")
+ts.onkey(right, "Right")
 
 steps = 0
 n_foods = 10
@@ -76,18 +77,14 @@ for _ in range(n_foods):
   food.speed(0)
   food.shape('square')
   food.color('red')
-#Make sure food doen't spawn on obsticle
+  #Make sure food doen't spawn on obsticle
   food_placed = False
   while not food_placed:
     food.goto(random.randint(-200, 200), random.randint(-200, 200))
     list_of_foods.append(food)
-    if abs(food.xcor() - obstacle.xcor()) > obstacle_len or abs(food.xcor() - obstacle.ycor()) > obstacle_hgt:
+    if abs(food.xcor() - obstacle.xcor()) > obstacle_len or abs(
+        food.xcor() - obstacle.ycor()) > obstacle_hgt:
       food_placed = True
-
-
-
-
-
 
 #poison
 poison = turtle.Turtle()
@@ -95,7 +92,6 @@ poison.penup()
 poison.speed(0)
 poison.shape('triangle')
 poison.color('Yellow')
-
 
 placed = False
 
@@ -106,7 +102,6 @@ while not placed:
       break
     if food == list_of_foods[-1]:
       placed = True
-
 
 print(list_of_foods)
 eaten = [False] * n_foods
@@ -132,7 +127,7 @@ segments = []
 
 while not game_over:
   steps = steps + 1
-  pen.write(len(segments), font = ('Courier', 24, 'normal'))
+  pen.write(len(segments), font=('Courier', 24, 'normal'))
   for kk in range(n_foods):
     if not eaten[kk]:
       if t.distance(list_of_foods[kk]) < 20:
@@ -148,8 +143,8 @@ while not game_over:
       t.hideturtle()
       for segment in segments:
         segment.ht()
-      report.write('Steps Taken = ' + str(steps * 20), font = ('Courier', 24, 'normal'))
-
+      report.write('Steps Taken = ' + str(steps * 20),
+                   font=('Courier', 24, 'normal'))
 
 #Is the Snake in the boundary?
   if abs(t.xcor()) > 215 or abs(t.ycor()) > 215:
@@ -158,8 +153,7 @@ while not game_over:
     t.penup()
     for segment in segments:
       segment.ht()
-    report.write('Ouch.', align = 'Center', font = ('Comic_Sans', 24, 'normal'))
-
+    report.write('Ouch.', align='Center', font=('Comic_Sans', 24, 'normal'))
 
   #Posion thingy
   if t.distance(poison) < 20:
@@ -168,28 +162,25 @@ while not game_over:
     t.penup()
     for segment in segments:
       segment.ht()
-    report.write('No! The Poison Got to You!', align = 'Center', font = ('Courier', 24, 'normal'))
+    report.write('No! The Poison Got to You!',
+                 align='Center',
+                 font=('Courier', 24, 'normal'))
 
 #No eat obsticale
-  #if t.distance < 20:
-  if abs(t.xcor() - obstacle.xcor()) < obstacle_len/2 + 10 and abs(t.ycor() - obstacle.ycor()) < obstacle_hgt/2 + 10:
+#if t.distance < 20:
+  if abs(t.xcor() - obstacle.xcor()) < obstacle_len / 2 + 10 and abs(
+      t.ycor() - obstacle.ycor()) < obstacle_hgt / 2 + 10:
     game_over = True
     t.speed(0)
     t.penup()
     for segment in segments:
       segment.ht()
-    report.write('Dang', align = 'Center', font = ('Courier', 24, 'normal'))
+    report.write('Dang', align='Center', font=('Courier', 24, 'normal'))
 
-
-
-
-
-  
   for index in range(len(segments) - 1, 0, -1):
     x = segments[index - 1].xcor()
     y = segments[index - 1].ycor()
     segments[index].goto(x, y)
-
 
   if len(segments) > 0:
     x = t.xcor()
