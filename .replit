@@ -1,5 +1,5 @@
 
-entrypoint = "secret_message2/main.py"
+entrypoint = "Snake_Game/main.py"
 modules = ["python-3.12"]
 
 [nix]
