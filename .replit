@@ -1,5 +1,5 @@
 
-entrypoint = "Snake_Game/main.py"
+entrypoint = "Midterm/main.py"
 modules = ["python-3.12"]
 
 [nix]
